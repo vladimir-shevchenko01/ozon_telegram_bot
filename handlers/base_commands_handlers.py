@@ -1,5 +1,5 @@
-from aiogram import F, Router
-from aiogram.types import Message
+from aiogram import Router
+from aiogram.types import Message, CallbackQuery
 from aiogram.filters import StateFilter, CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
@@ -18,5 +18,17 @@ async def command_start_handler(message: Message) -> None:
     user = message.from_user.id
     if user not in users:
         users.append(message.from_user.id)
+
+
+@base_commands_router.message(Command(commands='cancel'), ~StateFilter(default_state))
+async def process_cancel_command_state(message: Message, state: FSMContext):
+    await message.answer(
+        text='Вы введенные данные\n\n'
+             'Чтобы снова перейти к заполнению данных магазина '
+             'отправьте команду /shop_data'
+    )
+    # Сбрасываем состояние и очищаем данные, полученные внутри состояний
+    await state.clear()
+
 
 
