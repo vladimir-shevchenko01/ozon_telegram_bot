@@ -3,6 +3,7 @@ import logging
 
 from aiogram import Bot, Dispatcher
 from aiogram.types import BotCommand
+from aiogram.fsm.storage.memory import MemoryStorage
 
 from config.config import Config, load_config
 from handlers.base_commands_handlers import base_commands_router
@@ -11,6 +12,7 @@ from handlers.save_headers_handler import shop_data_router
 
 logger = logging.getLogger(__name__)
 
+storage = MemoryStorage()
 
 async def base_commands(bot):
     """Добавление кнопки 'Меню' со списком команд."""
@@ -44,7 +46,7 @@ async def main():
 
     bot = Bot(token=config.tg_bot.token,
               parse_mode='HTML')
-    dp = Dispatcher()
+    dp = Dispatcher(storage=storage)
     dp.include_router(base_commands_router)
     dp.include_router(shop_data_router)
     dp.include_router(real_report_router)
