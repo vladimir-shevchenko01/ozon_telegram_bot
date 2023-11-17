@@ -12,23 +12,30 @@ real_report_router = Router()
 
 @real_report_router.callback_query(F.data == 'real_rep')
 async def get_month_of_rep(callback: CallbackQuery):
-    month_list = get_mounth_depth_of_report()
-    month_list.pop()
-    kb_builder = InlineKeyboardBuilder()
-    buttons: list[InlineKeyboardButton] = [
-        InlineKeyboardButton(
-            text=selected_month,
-            callback_data=MonthCallBackFactory(
-                month=selected_month
-            ).pack()) for selected_month in month_list
-    ]
-    kb_builder.row(*buttons, width=3)
+    if callback.from_user.id not in database:
+        await callback.message.answer(
+            text='Вы не ввели данные магазина\n'
+                 'пожалуйста заполните недостающие данные\n'
+                 '/shop_data',
+        )
+    else:
+        month_list = get_mounth_depth_of_report()
+        month_list.pop()
+        kb_builder = InlineKeyboardBuilder()
+        buttons: list[InlineKeyboardButton] = [
+            InlineKeyboardButton(
+                text=selected_month,
+                callback_data=MonthCallBackFactory(
+                    month=selected_month
+                ).pack()) for selected_month in month_list
+        ]
+        kb_builder.row(*buttons, width=3)
 
-    await callback.message.answer(
-        text='Выберите месяц за который вы хотите получить отчет month_of_real_rep',
-        reply_markup=kb_builder.as_markup()
-    )
-    await callback.answer()
+        await callback.message.answer(
+            text='Выберите месяц за который вы хотите получить отчет month_of_real_rep',
+            reply_markup=kb_builder.as_markup()
+        )
+        await callback.answer()
 
 
 @real_report_router.callback_query(MonthCallBackFactory.filter())
