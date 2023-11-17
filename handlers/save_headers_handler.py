@@ -1,14 +1,12 @@
-from aiogram import Router, F
-from aiogram.types import (
-    Message, InlineKeyboardButton, InlineKeyboardMarkup
-)
+from aiogram import F, Router
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from database.database import database
+from ozon_api_request_body.api_headers import Headers
 from bot_states.states import FSMShopHeaders
-
+from database.database import database
 
 shop_data_router = Router()
 
@@ -42,7 +40,7 @@ async def get_api_key(message: Message, state: FSMContext):
     user = message.from_user.id
     data = await state.get_data()
     database[user] = data
-    print(database)
+
     # Создаем клавиатуру.
     get_shop_data_button = InlineKeyboardButton(
         text='Месячный отчет о реализации 💰',

@@ -1,12 +1,13 @@
 import asyncio
 import logging
+
 from aiogram import Bot, Dispatcher
 from aiogram.types import BotCommand
+
 from config.config import Config, load_config
 from handlers.base_commands_handlers import base_commands_router
-from handlers.save_headers_handler import shop_data_router
 from handlers.realization_report_handler import real_report_router
-
+from handlers.save_headers_handler import shop_data_router
 
 logger = logging.getLogger(__name__)
 
@@ -15,9 +16,18 @@ async def base_commands(bot):
     """Добавление кнопки 'Меню' со списком команд."""
     await bot.set_my_commands(
         [
-            BotCommand(command='help', description='❓ Как пользоваться ботом.'),
-            BotCommand(command='shop_data', description='🔑 Добавить токен и id магазина.'),
-            BotCommand(command='check_input_data', description='📄 Посмотреть введенные данные.'),
+            BotCommand(
+                command='help',
+                description='❓ Как пользоваться ботом.'
+            ),
+            BotCommand(
+                command='shop_data',
+                description='🔑 Добавить токен и id магазина.'
+            ),
+            BotCommand(
+                command='check_input_data',
+                description='📄 Посмотреть введенные данные.'
+            ),
         ]
     )
 
@@ -41,7 +51,8 @@ async def main():
     await base_commands(bot)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
-    
-    
+
+
 if __name__ == '__main__':
     asyncio.run(main())
+

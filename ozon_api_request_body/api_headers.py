@@ -1,1 +1,6 @@
-headers = {"Client-Id": client_id, "Api-Key": api_key}
+from pydantic import BaseModel
+
+
+class Headers(BaseModel):
+    client_id: str
+    api_key: str

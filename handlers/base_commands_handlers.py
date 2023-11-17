@@ -1,11 +1,12 @@
 from aiogram import Router
-from aiogram.types import Message, CallbackQuery
-from aiogram.filters import StateFilter, CommandStart, Command
+from aiogram.filters import Command, CommandStart, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
+from aiogram.types import CallbackQuery, Message
 from aiogram.utils import markdown
-from LEXICON.ru_lexicon import base_info_message
+
 from database.database import users
+from LEXICON.ru_lexicon import base_info_message
 
 base_commands_router = Router()
 

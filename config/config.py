@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 from environs import Env
+
 
 @dataclass
 class TgBot:
@@ -11,6 +13,7 @@ class TgBot:
 @dataclass
 class Config:
     tg_bot: TgBot
+
 
 def load_config(path: str | None = None) -> Config:
     env = Env()

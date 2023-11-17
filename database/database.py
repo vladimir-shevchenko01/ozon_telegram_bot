@@ -1,12 +1,4 @@
-# from dataclasses import dataclass
-#
-#
-# @dataclass
-# class Shop:
-#     client_id: int
-#     api_token: str
-
-
 users = []
+# how to add  postgresql db
 database: dict[int, dict[str]] = {}
 
