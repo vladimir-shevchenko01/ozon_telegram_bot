@@ -5,7 +5,7 @@ from aiogram.fsm.state import default_state
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.database import users, engine
+from database.database import engine, users
 from database.db_commands import db_register_user
 from LEXICON.ru_lexicon import base_info_message
 

@@ -1,10 +1,11 @@
-from aiogram.types import Message
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.ext.asyncio import AsyncSession
 import logging
 import sys
 
-from database.database import User
+from aiogram.types import Message
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from database.database import User, ShopKeys
 
 logging.basicConfig(
         level=logging.INFO,
@@ -13,7 +14,7 @@ logging.basicConfig(
         stream=sys.stdout
 )
 
-async def db_register_user(message: Message, session: AsyncSession):
+async def db_register_user(message: Message, session: AsyncSession) -> None:
 
     user = User(telegram_id=int(message.from_user.id))
 
@@ -24,8 +25,24 @@ async def db_register_user(message: Message, session: AsyncSession):
         await session.refresh(user)
         print('Запись создана')
         await session.close()
-        return True
     except IntegrityError:
         await session.rollback()
         logging.info('Запись уже существует.')
-        return False
+
+
+
+async def db_add_shop_headers(message: Message, session: AsyncSession, token: str | None, shop_id: int | None) -> None:
+
+
+    token = ShopKeys(user_id=int(message.from_user.id), ozon_admin_token=token, shop_id=shop_id)
+
+    session.add(token)
+
+    try:
+        await session.commit()
+        await session.refresh(token)
+        print('Запись создана')
+        await session.close()
+    except IntegrityError:
+        await session.rollback()
+        logging.info('Запись уже существует.')

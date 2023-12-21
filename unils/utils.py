@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+
 def get_mounth_depth_of_report() -> list:
     # Получаем текущую дату
     current_date = datetime.now()

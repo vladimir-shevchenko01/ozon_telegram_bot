@@ -2,11 +2,10 @@ users = []
 # how to add  postgresql db
 database: dict[int, dict[str]] = {}
 
+from sqlalchemy import BigInteger, ForeignKey, String, UniqueConstraint
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy import ForeignKey, String, UniqueConstraint, BigInteger
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import (Mapped, declarative_base, mapped_column,
+                            relationship)
 
 from config.config import load_config
 
@@ -20,14 +19,14 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True)
-    token: Mapped['Token'] = relationship(
-        'Token',
+    token: Mapped['ShopKeys'] = relationship(
+        'ShopKeys',
         back_populates='user',
         cascade='all, delete',
         passive_deletes=True,
     )
 
-class Token(Base):
+class ShopKeys(Base):
     __tablename__ = 'user_token'
     __table_args__ = (
         UniqueConstraint(
@@ -40,7 +39,7 @@ class Token(Base):
     user_id: Mapped[int] = mapped_column(
         ForeignKey('user_account.telegram_id', ondelete='CASCADE'),
     )
-
+    shop_id = mapped_column(BigInteger, nullable=True)
     ozon_admin_token = mapped_column(String, nullable=True)
     user: Mapped['User'] = relationship('User', back_populates='token')
 

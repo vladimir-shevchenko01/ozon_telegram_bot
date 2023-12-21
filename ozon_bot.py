@@ -3,9 +3,9 @@ import logging
 import sys
 
 from aiogram import Bot, Dispatcher
-from aiogram.types import BotCommand
-from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.types import BotCommand
 
 from config.config import load_config
 from database.database import start_db
