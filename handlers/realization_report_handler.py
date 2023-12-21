@@ -44,7 +44,7 @@ async def get_real_report_handler(callback: CallbackQuery,
     selected_month = callback_data.to_json()
     shop_id = database[callback.from_user.id]['client_id']
     api_key = database[callback.from_user.id]['api_key']
-    item_list = [key for key in get_real_rep_data(shop_id, api_key, selected_month)]
+    item_list = [key for key in await get_real_rep_data(shop_id, api_key, selected_month)]
 
     kb_builder = InlineKeyboardBuilder()
     buttons: list[InlineKeyboardButton] = [
@@ -71,7 +71,7 @@ async def get_real_report_handler(callback: CallbackQuery,
     product_and_selected_month = callback_data
     shop_id = database[callback.from_user.id]['client_id']
     api_key = database[callback.from_user.id]['api_key']
-    data: dict = get_real_rep_data(shop_id, api_key, product_and_selected_month.month)
+    data: dict = await get_real_rep_data(shop_id, api_key, product_and_selected_month.month)
     product_number = product_and_selected_month.item
 
     await callback.message.answer(
